@@ -9,11 +9,11 @@ import UserCard from '../usercard/usercard'
 	state=>state.chatuser,
 	{getUserList}
 )
-class Boss extends React.Component{
+class Genius extends React.Component{
 	componentDidMount(){
 		// 调用传入该组件的 getUserList 方法，
 		// 从通过 redux 进行管理的数据中获取 boss 列表，
-		this.props.getUserList('genius')
+		this.props.getUserList('boss')
 		// axios.get('/user/list?type=genius').then(res=>{
 		// 	if(res.data.code == 0){
 		// 		this.setState({data:res.data.data})
@@ -26,4 +26,4 @@ class Boss extends React.Component{
 	}
 }
 
-export default Boss
+export default Genius

@@ -8,12 +8,10 @@ import {connect} from 'react-redux'
 // AuthRoute 不是路由，不具有路由属性（this.props.history 等），
 // 使用 @withRouter 实现路由转换，使得具有路由属性，
 @withRouter
-
 @connect(
 	null,
 	{loadData}
 )
-
 // AuthRoute 组件位于路由组件内，用于页面跳转，
 class AuthRoute extends React.Component{
 	render(){
@@ -39,7 +37,6 @@ class AuthRoute extends React.Component{
 					// 无登录信息，跳转到登录页
 					this.props.history.push('./login')
 				}
-				console.log(res.data)
 			}
 		})
 
@@ -47,7 +44,6 @@ class AuthRoute extends React.Component{
 	// 当前URL地址，login不需要跳转，register需要跳转
 	// 用户type：boss、牛人
 	// 用户是否完善信息，头像、个人简介
-
 	}
 }
 

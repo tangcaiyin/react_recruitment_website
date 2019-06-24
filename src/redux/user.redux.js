@@ -5,6 +5,7 @@ import {getRedirectPath} from '../util'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const LOAD_DATA = 'LOAD_DATA'
 const ERROR_MSG = 'ERROR_MSG'
+const LOGOUT = 'LOGOUT'
 
 const initState = {
 	// 注册登陆成功后跳转到某个页面
@@ -30,6 +31,9 @@ export function user(state=initState,action){
 			return {...state, msg:'',redirectTo:getRedirectPath(action.payload), ...action.payload}
 		case LOAD_DATA:
 			return {...state, ...action.payload}
+		case LOGOUT:
+			// 退出登陆，恢复数据为初始值，重定向到 login 页面
+			return {...initState, redirectTo:'/login'}
 		case ERROR_MSG:
 			// 失败，返回错误信息，
 			return {...state, msg:action.msg, isAuth:false}
@@ -65,6 +69,10 @@ function errorMSG(msg){
 // payload 是传入该 action 的初始 state
 export function loadData(userinfo){
 	return {type:LOAD_DATA, payload:userinfo}
+}
+
+export function logoutSubmit(){
+	return {type:LOGOUT}
 }
 
 export function update(data){

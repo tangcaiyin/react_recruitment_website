@@ -25,6 +25,17 @@ const models = {
 		'money':{type:String}
 	},
 	chat:{
+		// 当前对话id
+		'chatid':{'type':String, require:true},
+		// 来自
+		'from':{'type':String, require:true},
+		// 发送给
+		'to':{'type':String, require:true},
+		// 是否已读，redux 里根据该属性确定该消息是否已读，得出未读条数，
+		'read':{'type':Boolean, require:false},
+		'content':{'type':String, require:true,default:''},
+		'create_time':{'type':Number, default:Date.now, require:true},
+		// 'create_time':{'type':Number, default:Date.now(),require:true},
 	}
 }
 

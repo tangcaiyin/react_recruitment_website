@@ -5,7 +5,9 @@ const utils = require('utility');
 const Router = express.Router()
 
 const model = require('./model')
+// 获取 model.js 里 user、chat 数据模型
 const User = model.getModel('user')
+const Chat = model.getModel('chat')
 
 // 定义过滤条件，过滤以下属性，接口响应里将不返回属性值设为 0 的属性，
 // 该过滤条件作为参数传入接口的 find() 方法里，
@@ -28,6 +30,23 @@ Router.get('/list', function(req,res){
 	// http://localhost:9093/user/list?type=boss
 })
 
+// 更新未读消息条数
+Router.post('/readmsg',function(req,res){
+	// 从 cookies 里读取当前用户
+	const userid = req.cookies.userid;
+	const {from} = req.body;
+	console.log(req.body)
+	console.log(userid,from)
+	Chat.update({from,to:userid},{'$set':{read:true}},{'multi':true},function(err,doc){
+		console.log(doc)
+		if(!err){
+			return res.json({code:0,num:doc.nModified})
+		}
+		return res.json({code:1,msg:'修改失败'})
+	})
+})
+
+
 // 完善信息更新数据
 Router.post('/update',function(req,res){
 	const userid = req.cookies.userid;
@@ -44,8 +63,25 @@ Router.post('/update',function(req,res){
 		},body)
 		return res.json({code:0,data})
 	})
-
 })
+
+Router.get('/getmsglist',function(req,res){
+	const user = req.cookies.userid
+	User.find({},function(err,userdoc){
+		// 定义 users 对象，返回到前端
+		let users = {};
+		userdoc.forEach(v=>{
+			users[v._id] = {name:v.user,avatar:v.avatar}
+		})
+		// $or，根据数组里的多个条件进行查询，
+		Chat.find({'$or':[{from:user},{to:user}]},function(err,doc){
+			if(!err){
+				return res.json({code:0,msgs:doc,users:users})
+			}
+		})
+	})
+})
+
 
 // 后端处理 login 地址的请求
 Router.post('/login',function(req,res){
@@ -84,7 +120,6 @@ Router.post('/register', function(req,res){
 			// 查询到请求体，则说明数据重复
 			return res.json({code:1,msg:'用户名重复'})
 		}
-
 		// 为获取后端 register 接口生成的数据对象里的随机 id，不使用 create 方法，使用 save 方法，
 		const userModel = new User({user, type, pwd:md5Pwd(pwd)})
 		userModel.save(function(err, doc){

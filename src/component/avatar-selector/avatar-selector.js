@@ -6,7 +6,7 @@ class AvatarSelector extends React.Component{
 	// 类型验证，
 	// selectAvatar 为函数，且不可缺少，
 	// static 
-	PropTypes = {
+	static propTypes = {
 		selectAvatar:PropTypes.func.isRequired
 	}
 	constructor(props){

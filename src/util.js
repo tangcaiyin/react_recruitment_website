@@ -5,7 +5,6 @@
 // user.type:boss、genius
 // user.avatar:bossInfo、geniusInfo
 export function getRedirectPath({type,avatar}){
-
 	// 根据用户类型，赋值相应 url 地址，
 	let url = (type==='boss') ? '/boss' : '/genius'
 	// 根据是否有头像，跳转到完善信息页面，
@@ -13,4 +12,10 @@ export function getRedirectPath({type,avatar}){
 		url += 'info'
 	}
 	return url
+}
+
+
+// 对聊天双方 id 排序并合并，
+export function getChatId(userId,targetId){
+	return [userId,targetId].sort().join('_');
 }

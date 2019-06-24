@@ -23,10 +23,11 @@ export function getUserList(type){
 	return dispatch=>{
 		// 以下是对 component/boss/boss 组件内 componentDidMount 生命周期下的请求进行改写，
 		axios.get('/user/list?type=' + type).then(res=>{
-			if(res.data.code == 0){
+			if(res.data.code === 0){
 				// this.setState({data:res.data.data})
 				dispatch(userList(res.data.data))
 			}
 		})
 	}
 }
+
